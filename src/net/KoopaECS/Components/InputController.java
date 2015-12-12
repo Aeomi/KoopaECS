@@ -8,13 +8,19 @@ import net.KoopaECS.Entities.BaseEntity;
 public class InputController {
 	
 	private BaseEntity _parentEntity;
-	private Input _inputs;
+	private Input 	   _inputs;
+	
+	private int _directionX;
+	private int _directionY;
 	
 	
 	public InputController(BaseEntity entity) {
 		
 		_parentEntity = entity;
 		_inputs = new Input(0);
+		
+		_directionX = 0;
+		_directionY = 0;
 		
 	}
 	
@@ -26,7 +32,7 @@ public class InputController {
 	}
 
 	
-	
+	// This will set the input directions
 	private void processInputs(double dt) {
 		
 		// Used keys
@@ -35,25 +41,37 @@ public class InputController {
 		int a = Input.KEY_A;
 		int d = Input.KEY_D;
 		
-		// temp; TODO: setup rigidBody (mass, speed, etc implements there)
-		double speed = 100.0 * dt;
-		
-		// Vertical movement
 		if (_inputs.isKeyDown(w))
-			_parentEntity.transform.y -= speed;
-		
-		if (_inputs.isKeyDown(s))
-			_parentEntity.transform.y += speed;
-		
-		// Horizontal movement
+			_directionY = -1;
+		else if (_inputs.isKeyDown(s))
+			_directionY = 1;
+		else _directionY = 0;
 		if (_inputs.isKeyDown(a))
-			_parentEntity.transform.x -= speed;
+			_directionX = -1;
+		else if (_inputs.isKeyDown(d))
+			_directionX = 1;
+		else _directionX = 0;
 		
-		if (_inputs.isKeyDown(d))
-			_parentEntity.transform.x += speed;
-		
+		_parentEntity.transform.directionX = getDirectionX();
+		_parentEntity.transform.directionY = getDirectionY();
 		
 	}
 	
+
+	
+	
+	public int getDirectionX() {
+		
+		return this._directionX;
+		
+	}
+	
+	
+	
+	public int getDirectionY(){
+		
+		return this._directionY;
+		
+	}
 	
 }
